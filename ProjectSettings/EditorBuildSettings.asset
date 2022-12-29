@@ -1,0 +1,13 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Project/Scenes/ShopyVerse.unity
+    guid: 10b019c98d9371b4aadabe01d7cff0bf
+  m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: a7b5cc38af7004e49a9f008130d892f1, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 297880edb776f3344bda3b629c221cc4, type: 2}
