@@ -11,14 +11,6 @@ public class BowlingGeneral : MonoBehaviourPunCallbacks
 
     public GameObject getBallText;
 
-    public GameObject Player_text1;
-
-    public GameObject Player_text2;
-
-    public GameObject Playerscore_text1;
-
-    public GameObject Playerscore_text2;
-
     public TMP_Text Player1_text;
 
     public TMP_Text Player2_text;
@@ -62,10 +54,6 @@ public class BowlingGeneral : MonoBehaviourPunCallbacks
     public bool roundPlayed;
 
     bool startround = false;
-
-    public TMP_Text roundtxt;
-
-    public GameObject roundobj;
 
     public Animator _animator;
 
@@ -131,7 +119,10 @@ public class BowlingGeneral : MonoBehaviourPunCallbacks
 
                 if (Input.GetKeyDown(KeyCode.F))
                 {
-                    isLoggined = true;
+                    if (Pv.IsMine)
+                    {
+                        isLoggined = true;
+                    }
 
                     Pv.RPC("SetName", RpcTarget.All, null);
                     if (isLoggined)
@@ -259,7 +250,7 @@ public class BowlingGeneral : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    void SetName()
+    public void SetName()
     {
         if (Player1_text.text == "" || Player1_text.text == null)
         {
@@ -275,20 +266,26 @@ public class BowlingGeneral : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    void ScoreUpdater(int score)
+    public void ScoreUpdater(int score)
     {
-        if (Player1_text.text == nps.username.text)
+        if (BorderObj != null)
         {
-            P1_score_text.text = score.ToString();
-        }
-        else if (Player2_text.text == nps.username.text)
-        {
-            P2_score_text.text = score.ToString();
+            if (Player1_text.text == nps.username.text)
+            {
+                P1_score_text.text = score.ToString();
+            }
+            else
+            {
+            }
+            if (Player2_text.text == nps.username.text)
+            {
+                P2_score_text.text = score.ToString();
+            }
         }
     }
 
     [PunRPC]
-    void ClearText()
+    public void ClearText()
     {
         if (Player1_text.text == nps.username.text)
         {
@@ -303,38 +300,38 @@ public class BowlingGeneral : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    void canNull()
+    public void canNull()
     {
         BorderObj = null;
         border = null;
     }
 
     [PunRPC]
-    void BallActive()
+    public void BallActive()
     {
         myB_Ball.SetActive(true);
     }
 
     [PunRPC]
-    void BallDeactive()
+    public void BallDeactive()
     {
         myB_Ball.SetActive(false);
     }
 
     [PunRPC]
-    void GetParent()
+    public void GetParent()
     {
         myB_Ball.transform.parent = GameProps.transform;
     }
 
     [PunRPC]
-    void NullParent()
+    public void NullParent()
     {
         myB_Ball.transform.SetParent(null);
     }
 
     [PunRPC]
-    void CountPinsDown()
+    public void CountPinsDown()
     {
         for (int i = 0; i < pins.Length; i++)
         {

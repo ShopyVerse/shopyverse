@@ -99,7 +99,7 @@ public class BowlingGame : MonoBehaviourPunCallbacks
     public bool updated = false;
 
     [PunRPC]
-    void Round()
+    public void Round()
     {
         if (BD.ball_detected == true)
         {

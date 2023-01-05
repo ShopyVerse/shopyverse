@@ -36,14 +36,6 @@ namespace Vitrin.PlayerController
         {
             PlayerAnimations();
             Input_Controller();
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (gameObject.tag == "bowling")
-                {
-                    Debug.Log("bowling giriş");
-                }
-            }
         }
 
         void PlayerAnimations()

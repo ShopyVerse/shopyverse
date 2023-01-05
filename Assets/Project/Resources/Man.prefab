@@ -1779,10 +1779,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BowlingText: {fileID: 0}
   getBallText: {fileID: 0}
-  Player_text1: {fileID: 0}
-  Player_text2: {fileID: 0}
-  Playerscore_text1: {fileID: 0}
-  Playerscore_text2: {fileID: 0}
   Player1_text: {fileID: 0}
   Player2_text: {fileID: 0}
   P1_score_text: {fileID: 0}
@@ -1802,8 +1798,6 @@ MonoBehaviour:
   BorderObj: {fileID: 0}
   border: {fileID: 0}
   roundPlayed: 0
-  roundtxt: {fileID: 0}
-  roundobj: {fileID: 0}
   _animator: {fileID: 0}
   played: 0
   PFCC: {fileID: 5170186666979890661}

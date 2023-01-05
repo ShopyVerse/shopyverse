@@ -39,7 +39,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            Destroy(gameObject);
+          PhotonNetwork.Destroy(gameObject);
         }
         PhotonNetwork.ConnectUsingSettings();
 
