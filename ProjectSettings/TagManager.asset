@@ -18,6 +18,7 @@ TagManager:
   - PinArea
   - Ball
   - Playland
+  - BoardText
   layers:
   - Default
   - TransparentFX

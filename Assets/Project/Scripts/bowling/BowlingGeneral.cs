@@ -10,14 +10,20 @@ public class BowlingGeneral : MonoBehaviourPunCallbacks
     public GameObject BowlingText;
 
     public GameObject getBallText;
+    public TMP_Text[] boardtexts;
 
-    public TMP_Text Player1_text;
+    public TMP_Text Player1_text;    
 
     public TMP_Text Player2_text;
 
     public TMP_Text P1_score_text;
 
-    public TMP_Text P2_score_text;
+    public TMP_Text P2_score_text; 
+    public GameObject p1_score_obj;   
+    public GameObject p2_score_obj;   
+    public GameObject player1_obj;   
+    public GameObject player2_obj;   
+
 
     public GameObject canvas;
 
@@ -62,6 +68,8 @@ public class BowlingGeneral : MonoBehaviourPunCallbacks
     public PlayfabCoinController PFCC;
 
     public GameObject[] pins;
+    public GameObject BoardTextObj;
+    public bowling b;
 
     void OnTriggerStay(Collider other)
     {
@@ -69,24 +77,23 @@ public class BowlingGeneral : MonoBehaviourPunCallbacks
         {
             if (Pv.IsMine)
             {
-                if (BorderObj == null)
-                {
-                    BorderObj = other.gameObject;
-                }
-                if (border == null)
-                {
-                    border = BorderObj.GetComponent<BowlingGame>();
-                }
-                nps = gameObject.GetComponent<NetworkPlayerSync>();
-
-                board_hud = GameObject.FindWithTag("board_hud");
-                canvas = GameObject.FindWithTag("canvas");
-                BowlingText = canvas.transform.GetChild(2).gameObject;
-                getBallText = canvas.transform.GetChild(3).gameObject;
-                Player1_text = border.p1_text;
-                Player2_text = border.p2_text;
-                P1_score_text = border.p1_scoretext;
-                P2_score_text = border.p2_scoretext;
+                // if (Input.GetKeyDown(KeyCode.F))
+                // {
+                // if (BorderObj == null)
+                // {
+                //     BorderObj = other.gameObject;
+                // }
+                // if (border == null)
+                // {
+                //     border = BorderObj.GetComponent<BowlingGame>();
+                //     Player1_text = border.p1_text;
+                // Player2_text = border.p2_text;
+                // P1_score_text = border.p1_scoretext;
+                // P2_score_text = border.p2_scoretext;
+                // }
+                // }
+                                                 
+                
                 if (!isLoggined)
                 {
                     BowlingText.SetActive(true);
@@ -118,18 +125,19 @@ public class BowlingGeneral : MonoBehaviourPunCallbacks
                 }
 
                 if (Input.GetKeyDown(KeyCode.F))
-                {
-                    if (Pv.IsMine)
-                    {
-                        isLoggined = true;
-                    }
-
+                {                    
+                    isLoggined = true;                    
                     Pv.RPC("SetName", RpcTarget.All, null);
                     if (isLoggined)
                     {
                         BowlingText.SetActive(false);
                     }
                 }
+                if (isLoggined)
+            {
+                Pv.RPC("CountPinsDown", RpcTarget.All, null);
+                Pv.RPC("ScoreUpdater", RpcTarget.All, score);
+            }
             }
         }
         if (other.gameObject.tag == "GetBall")
@@ -187,7 +195,11 @@ public class BowlingGeneral : MonoBehaviourPunCallbacks
             }
         }
     }
-
+     public void Awake() {
+        BoardTextObj = GameObject.FindGameObjectWithTag("BoardText");
+        b = BoardTextObj.GetComponent<bowling>();
+        boardtexts = b.boardtext;
+     }
     void Update()
     {
         if (Pv.IsMine)
@@ -208,19 +220,32 @@ public class BowlingGeneral : MonoBehaviourPunCallbacks
             {
                 StartCoroutine(BallReset());
             }
-            if (isLoggined)
-            {
-                Pv.RPC("CountPinsDown", RpcTarget.All, null);
-                Pv.RPC("ScoreUpdater", RpcTarget.All, score);
-            }
+            
         }
     }
 
     void Start()
     {
         rb = myB_Ball.GetComponent<Rigidbody>();
-        _animator = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();        
         rb.maxAngularVelocity = 50;
+        nps = gameObject.GetComponent<NetworkPlayerSync>();    
+         BorderObj = GameObject.FindWithTag("border");
+                 border = BorderObj.GetComponent<BowlingGame>();
+                   board_hud = GameObject.FindWithTag("board_hud");
+                canvas = GameObject.FindWithTag("canvas");      
+                 BowlingText = canvas.transform.GetChild(2).gameObject;
+                getBallText = canvas.transform.GetChild(3).gameObject;  
+               
+                player1_obj = board_hud.transform.GetChild(0).gameObject;
+                player2_obj = board_hud.transform.GetChild(1).gameObject;
+                p1_score_obj = board_hud.transform.GetChild(2).gameObject;
+                p2_score_obj = board_hud.transform.GetChild(3).gameObject;
+
+                P1_score_text = p1_score_obj.GetComponent<TMP_Text>();
+                P2_score_text = p2_score_obj.GetComponent<TMP_Text>();
+                Player1_text = player1_obj.GetComponent<TMP_Text>();
+                Player2_text = player2_obj.GetComponent<TMP_Text>();
     }
 
     IEnumerator BallReset()
@@ -254,13 +279,13 @@ public class BowlingGeneral : MonoBehaviourPunCallbacks
     {
         if (Player1_text.text == "" || Player1_text.text == null)
         {
-            Player1_text.text = nps.username.text;
+            border.SetP1Text(nps.username.text);
         }
         else if (Player2_text.text == "" || Player2_text.text == null)
         {
             if (Player1_text.text != nps.username.text)
             {
-                Player2_text.text = nps.username.text;
+                border.SetP2Text(nps.username.text);
             }
         }
     }

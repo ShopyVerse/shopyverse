@@ -36,19 +36,18 @@ public class BowlingGame : MonoBehaviourPunCallbacks
     public string WinnerName;
 
     public GameObject Player;
-
-    public BowlingGeneral BG;
+    
 
     public BallDetector BD;
 
     public bool isFinished;
+    public GameObject[] players;
+      public NetworkPlayerSync nps;
 
     void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "Player")
-        {
-            Player = GameObject.FindWithTag("Player");
-            BG = Player.GetComponent<BowlingGeneral>();
+        {              
             if (Input.GetKey(KeyCode.Q))
             {
                 ResetPins();
@@ -58,8 +57,7 @@ public class BowlingGame : MonoBehaviourPunCallbacks
     }
 
     void Start()
-    {
-        //pins = GameObject.FindGameObjectsWithTag("Pin"); // çekmek yerine elle atılcak
+    {        
         Pv = GetComponent<PhotonView>();
         positions = new Vector3[pins.Length];
         for (int i = 0; i < pins.Length; i++)
@@ -73,7 +71,7 @@ public class BowlingGame : MonoBehaviourPunCallbacks
         Pv.RPC("StartRound", RpcTarget.All, null);
         Pv.RPC("Round", RpcTarget.All, null);
         Pv.RPC("roundController", RpcTarget.All, null);
-        Pv.RPC("roundtable", RpcTarget.All, roundCounter);
+        Pv.RPC("roundtable", RpcTarget.All, roundCounter);        
     }
 
     [PunRPC]
@@ -191,5 +189,28 @@ public class BowlingGame : MonoBehaviourPunCallbacks
                 startround = true;
             }
         }
+    }
+
+    public void SetP1Text(string newText)
+    {
+        p1_text.text = newText;
+        photonView.RPC("UpdateP1Text", RpcTarget.AllBuffered, newText);
+    }
+
+    [PunRPC]
+    public void UpdateP1Text(string newText)
+    {
+        p1_text.text = newText;
+    }
+    public void SetP2Text(string newText)
+    {
+        p2_text.text = newText;
+        photonView.RPC("UpdateP2Text", RpcTarget.AllBuffered, newText);
+    }
+
+    [PunRPC]
+    public void UpdateP2Text(string newText)
+    {
+        p2_text.text = newText;
     }
 }
