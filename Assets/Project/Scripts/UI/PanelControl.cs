@@ -14,6 +14,7 @@ public class PanelControl : MonoBehaviour
     [SerializeField] GameObject _womanInfo;
     [SerializeField] GameObject login_hud;
     [SerializeField] GameObject create_avatar_hud;
+    [SerializeField] GameObject aurora;
 
     public Color lastColorTxt;
   
@@ -56,6 +57,7 @@ public class PanelControl : MonoBehaviour
         _parentObject.DOAnchorPos(new Vector3(0,0,0), 0.4f);
         _manInfo.transform.parent.gameObject.SetActive(false);
         _womanInfo.transform.parent.gameObject.SetActive(false);
+        aurora.SetActive(true);
     }
     public void LoginPanel()
     {
@@ -67,6 +69,7 @@ public class PanelControl : MonoBehaviour
         _parentObject.DOAnchorPos(new Vector3(0, 50, 0), 0.4f);
         _manInfo.transform.parent.gameObject.SetActive(true);
         _womanInfo.transform.parent.gameObject.SetActive(true);
+        aurora.SetActive(false);
 
 
     }

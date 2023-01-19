@@ -36,49 +36,52 @@ public class BowlingGame : MonoBehaviourPunCallbacks
     public string WinnerName;
 
     public GameObject Player;
-    
 
     public BallDetector BD;
 
     public bool isFinished;
+
     public GameObject[] players;
-      public NetworkPlayerSync nps;
+
+    public NetworkPlayerSync nps;
+    public boardtextobject bto;
+    public TextMeshProUGUI[] boardtexts;  
+
+    public int int_p1;
+    public int int_p2;
+    public int int_s1;
+    public int int_s2;
+    public int int_r1;
 
     void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "Player")
-        {              
+        {
             if (Input.GetKey(KeyCode.Q))
             {
-                ResetPins();
-                Debug.Log("basildı");
-            }
+                ResetPins();                
+                
+            }                                                          
+            Pv.RPC("roundController", RpcTarget.All, null);
+                                    
         }
     }
 
     void Start()
-    {        
+    {
         Pv = GetComponent<PhotonView>();
         positions = new Vector3[pins.Length];
         for (int i = 0; i < pins.Length; i++)
         {
             positions[i] = pins[i].transform.position;
         }
+        boardtexts = bto.boardtext;
     }
 
     private void Update()
     {
-        Pv.RPC("StartRound", RpcTarget.All, null);
-        Pv.RPC("Round", RpcTarget.All, null);
-        Pv.RPC("roundController", RpcTarget.All, null);
-        Pv.RPC("roundtable", RpcTarget.All, roundCounter);        
-    }
-
-    [PunRPC]
-    public void roundtable(int roundCounter)
-    {
-        round.text = roundCounter.ToString();
-    }
+         
+    }  
 
     void ResetPins()
     {
@@ -99,7 +102,30 @@ public class BowlingGame : MonoBehaviourPunCallbacks
     [PunRPC]
     public void Round()
     {
-        if (BD.ball_detected == true)
+       
+    }
+
+    IEnumerator roundincrement()
+    {
+        yield return new WaitForSeconds(6);
+        roundCounter++;
+        bto.boardtext[int_r1].text = "Round: "+roundCounter.ToString();
+        ResetPins();
+    }
+
+    [PunRPC]
+    public void roundController()
+    {
+         if (p1_text.text != "" && p2_text.text != "")
+        {
+            if (!startround)
+            {
+                roundCounter = 1;
+                bto.boardtext[int_r1].text = "Round: "+ roundCounter.ToString();
+                startround = true;                
+            }
+        }
+         if (BD.ball_detected == true)
         {
             if (!updated)
             {
@@ -108,49 +134,52 @@ public class BowlingGame : MonoBehaviourPunCallbacks
             }
             StartCoroutine(Scorebool());
         }
-    }
-
-    IEnumerator roundincrement()
-    {
-        yield return new WaitForSeconds(6);
-        roundCounter++;
-        ResetPins();
-    }
-
-    [PunRPC]
-    public void roundController()
-    {
         if (roundCounter == 1)
         {
-            RoundName = p1_text.text;
+            RoundName = bto.boardtext[int_p1].text;
         }
         else if (roundCounter == 2)
         {
-            RoundName = p2_text.text;
+            RoundName = bto.boardtext[int_p2].text;
         }
         else if (roundCounter == 3)
         {
-            RoundName = p1_text.text;
+            RoundName = bto.boardtext[int_p1].text;
         }
         else if (roundCounter == 4)
         {
-            RoundName = p2_text.text;
+            RoundName = bto.boardtext[int_p2].text;
         }
         else if (roundCounter == 5)
         {
+            RoundName = bto.boardtext[int_p1].text;
+        }
+        else if (roundCounter == 6)
+        {
+            RoundName = bto.boardtext[int_p2].text;
+        }
+        else if (roundCounter == 7)
+        {
+            RoundName = bto.boardtext[int_p1].text;
+        }
+        else if (roundCounter == 8)
+        {
+            RoundName = bto.boardtext[int_p2].text;
+        }
+        else if (roundCounter == 9)
+        {
             RoundName = "";
-
             isFinished = true;
-            p1_score = int.Parse(p1_scoretext.text);
-            p2_score = int.Parse(p2_scoretext.text);
+            p1_score = int.Parse(bto.boardtext[int_s1].text);
+            p2_score = int.Parse(bto.boardtext[int_s2].text);
 
             if (p1_score > p2_score)
             {
-                WinnerName = p1_text.text;
+                WinnerName = bto.boardtext[int_p1].text;
             }
             else if (p1_score < p2_score)
             {
-                WinnerName = p2_text.text;
+                WinnerName = bto.boardtext[int_p2].text;
             }
             StartCoroutine(RoundClear());
         }
@@ -165,12 +194,13 @@ public class BowlingGame : MonoBehaviourPunCallbacks
     IEnumerator RoundClear()
     {
         yield return new WaitForSeconds(6);
-        p2_text.text = "";
-        p1_text.text = "";
-        p1_scoretext.text = "";
-        p2_scoretext.text = "";
-        round.text = "";
+        bto.boardtext[int_p1].text = "";
+        bto.boardtext[int_p2].text = "";
+        bto.boardtext[int_s1].text = "";
+        bto.boardtext[int_s2].text = "";
+        bto.boardtext[int_r1].text = "";
         roundCounter = 0;
+        bto.boardtext[int_r1].text = "Round: "+roundCounter.ToString();
         WinnerName = "";
         isFinished = false;
         startround = false;
@@ -181,36 +211,97 @@ public class BowlingGame : MonoBehaviourPunCallbacks
     [PunRPC]
     public void StartRound()
     {
-        if (p1_text.text != "" && p2_text.text != "")
-        {
-            if (!startround)
-            {
-                roundCounter = 1;
-                startround = true;
-            }
-        }
+       
     }
 
     public void SetP1Text(string newText)
     {
-        p1_text.text = newText;
+        bto.boardtext[int_p1].text = newText;
         photonView.RPC("UpdateP1Text", RpcTarget.AllBuffered, newText);
     }
 
     [PunRPC]
     public void UpdateP1Text(string newText)
     {
-        p1_text.text = newText;
+        bto.boardtext[int_p1].text = newText;
     }
+
     public void SetP2Text(string newText)
     {
-        p2_text.text = newText;
+        bto.boardtext[int_p2].text = newText;
         photonView.RPC("UpdateP2Text", RpcTarget.AllBuffered, newText);
     }
 
     [PunRPC]
     public void UpdateP2Text(string newText)
     {
-        p2_text.text = newText;
+        bto.boardtext[int_p2].text = newText;
+    }
+
+    public void clearP1Text(string clearText)
+    {
+        bto.boardtext[int_p1].text = clearText;
+        bto.boardtext[int_s1].text = clearText;
+        photonView.RPC("UpdateToClearP1Text", RpcTarget.AllBuffered, clearText);
+    }
+
+    [PunRPC]
+    public void UpdateToClearP1Text(string clearText)
+    {
+        bto.boardtext[int_p1].text = clearText;
+        bto.boardtext[int_s1].text = clearText;
+    }
+    public void clearP2Text(string clearText)
+    {
+        bto.boardtext[int_p2].text = clearText;
+        bto.boardtext[int_s2].text = clearText;
+        photonView.RPC("UpdateToClearP2Text", RpcTarget.AllBuffered, clearText);
+    }
+
+    [PunRPC]
+    public void UpdateToClearP2Text(string clearText)
+    {
+        bto.boardtext[int_p2].text = clearText;
+        bto.boardtext[int_s2].text = clearText;
+    }
+    public void P1score(string newScore)
+    {        
+        bto.boardtext[int_s1].text = newScore;
+        photonView.RPC("UpdateP1score", RpcTarget.AllBuffered, newScore);
+    }
+
+    [PunRPC]
+    public void UpdateP1score(string newScore)
+    {        
+        bto.boardtext[int_s1].text = newScore;
+    }
+    public void P2score(string newScore)
+    {        
+        bto.boardtext[int_s2].text = newScore;
+        photonView.RPC("UpdateP2score", RpcTarget.AllBuffered, newScore);
+    }
+
+    [PunRPC]
+    public void UpdateP2score(string newScore)
+    {        
+        bto.boardtext[int_s2].text = newScore;
+    }
+
+     public void ifexitplayer(int roundclear)
+    {                
+         roundCounter = roundclear;
+        bto.boardtext[int_r1].text = roundclear.ToString(); 
+        photonView.RPC("Punifexitplayer", RpcTarget.AllBuffered, roundclear);
+    }
+
+    [PunRPC]
+    public void Punifexitplayer(int roundclear)
+    {
+        if (bto.boardtext[int_p1].text == "" || bto.boardtext[int_p2].text == "" )
+        {
+            roundCounter = roundclear;
+            bto.boardtext[int_r1].text = roundclear.ToString();       
+        }
+         
     }
 }

@@ -24,7 +24,12 @@ public class LoginRegister : MonoBehaviour
     TMP_InputField _username;
 
     [SerializeField]
+    TMP_InputField aurora;
+
+    [SerializeField]
     TextMeshProUGUI _popUp;
+    [SerializeField]
+    TextMeshProUGUI _errorText;
 
     [SerializeField]
     GameObject _loadingTxt;
@@ -92,6 +97,7 @@ public class LoginRegister : MonoBehaviour
     {
         Debug.Log(error.ErrorMessage);
         Debug.Log(error.GenerateErrorReport());
+        _errorText.text =error.ErrorMessage;
     }
 
     void OneRegisterSucces(RegisterPlayFabUserResult result)
@@ -101,7 +107,7 @@ public class LoginRegister : MonoBehaviour
         _emailInput.text = "";
         _passwordInput.text = "";
         _panelControl.LoginPanel();
-        //OnLoginNetwork();
+        UpdateCustomData();        
     }
 
     void OnLoginSucces(LoginResult result)
@@ -128,5 +134,26 @@ public class LoginRegister : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         PhotonManager._networkManager.Login();
+    }
+    public void UpdateCustomData()
+    {
+        var request = new UpdateUserDataRequest
+        {
+            Data = new Dictionary<string, string>
+            {
+                { "Aurora Wallet Account : ", aurora.text },            
+            }
+        };
+        
+        PlayFabClientAPI.UpdateUserData(request, OnUpdateCustomDataSuccess, OnUpdateCustomDataError);
+    }
+     public void OnUpdateCustomDataSuccess(UpdateUserDataResult result)
+    {
+        Debug.Log("Custom data updated!");
+    }
+
+    public void OnUpdateCustomDataError(PlayFabError error)
+    {
+        Debug.LogError(error.GenerateErrorReport());
     }
 }

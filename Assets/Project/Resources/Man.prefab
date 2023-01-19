@@ -1779,6 +1779,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BowlingText: {fileID: 0}
   getBallText: {fileID: 0}
+  second_player_waitingText: {fileID: 0}
   boardtexts: []
   Player1_text: {fileID: 0}
   Player2_text: {fileID: 0}
@@ -1808,7 +1809,7 @@ MonoBehaviour:
   PFCC: {fileID: 5170186666979890661}
   pins: []
   BoardTextObj: {fileID: 0}
-  b: {fileID: 0}
+  bto: {fileID: 0}
   canFalse: 0
 --- !u!95 &1496215817749669799
 Animator:
