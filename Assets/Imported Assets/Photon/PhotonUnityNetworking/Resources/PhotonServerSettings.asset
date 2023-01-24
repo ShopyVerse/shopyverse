@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
   AppSettings:
-    AppIdRealtime: 00246f5c-84f9-4ee4-b7e7-df4d56fb7e6e
+    AppIdRealtime: fa1ae0e6-8c3c-4209-9e46-ee076d5fb98f
     AppIdFusion: 
     AppIdChat: 
     AppIdVoice: 
@@ -34,42 +34,30 @@ MonoBehaviour:
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
-  - ClickRpc
-  - DestroyRpc
-  - DestroySpaceship
-  - Fire
-  - RespawnSpaceship
-  - CantHearYou
-  - ChangeColour
-  - HeresWhy
-  - EnableSoldLabel
-  - loginGame
-  - SetName
-  - getPlayer
-  - ClearText
+  - actorinc
   - BallActive
   - BallDeactive
-  - GetParent
-  - NullParent
+  - ClearText
+  - ClickRpc
   - CountPinsDown
-  - ScoreUpdater
-  - round
-  - roundController
-  - StartRound
-  - Scorebool
-  - roundtable
-  - ResetPins
+  - DestroyRpc
+  - DestroySpaceship
+  - EnableSoldLabel
+  - Fire
+  - GetParent
+  - KickPlayer
+  - NullParent
+  - Punifexitplayer
+  - RespawnSpaceship
   - Round
-  - canNull
-  - UpdateText
+  - ScoreUpdater
+  - SetName
+  - UpdateP1score
   - UpdateP1Text
+  - UpdateP2score
   - UpdateP2Text
   - UpdateToClearP1Text
   - UpdateToClearP2Text
-  - ifexitplayer
-  - UpdateP1score
-  - UpdateP2score
-  - Punifexitplayer
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

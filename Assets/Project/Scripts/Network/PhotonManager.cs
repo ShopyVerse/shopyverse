@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
@@ -15,6 +16,12 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     [SerializeField] GameObject login;
 
     [SerializeField] VoiceChatManager agoraChat;
+    [SerializeField] TMP_InputField a_chat;
+    public int actorNmbr;
+    public string name;
+    public PhotonView photonView;
+    Dictionary<string, Player> players;
+    
 
     private void Awake()
     {
@@ -44,6 +51,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks
           PhotonNetwork.Destroy(gameObject);
         }
         PhotonNetwork.ConnectUsingSettings();
+        
+
+        actorNmbr = 1;
+        
 
     }
 
@@ -66,7 +77,31 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         agoraChat.Join();
         
         CreatePlayer();
+       
+        Player player = PhotonNetwork.CurrentRoom.GetPlayer(actorNmbr);
         
+        players = new Dictionary<string, Player>();
+        players.Add(player.NickName,player);
+        photonView.RPC("actorinc", RpcTarget.All, actorNmbr);
+        name = a_chat.text;
+        //            
+    }
+    [PunRPC]
+    public void actorinc(int actorNmbr)
+    {
+        actorNmbr += 1000;
+    }
+    public void Ban() 
+    {        
+        name = a_chat.text;
+        photonView.RPC("KickPlayer", players[name]);            
+    }
+    
+
+    [PunRPC]
+    public void KickPlayer()
+    {
+         PhotonNetwork.LeaveRoom(); 
     }
     private void ChangeScene(string sceneName)
     {
@@ -91,7 +126,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         //ChangeScene("Environment_2");
         yield return null;
         PhotonNetwork.JoinRoom(roomName);
+       
+
     }
+    
 
     public void Login()
     {
@@ -108,6 +146,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         Debug.Log(gender + "qqq");
         GameObject[] points = GameObject.FindGameObjectsWithTag("SpawnPoint");
         int value = Random.Range(0, points.Length);
+
 
 #if UNITY_WEBGL
 

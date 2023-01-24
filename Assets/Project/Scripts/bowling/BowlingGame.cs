@@ -62,8 +62,8 @@ public class BowlingGame : MonoBehaviourPunCallbacks
                 ResetPins();                
                 
             }                                                          
-            Pv.RPC("roundController", RpcTarget.All, null);
-                                    
+            Pv.RPC("Round", RpcTarget.All, null);
+            roundController();
         }
     }
 
@@ -77,11 +77,6 @@ public class BowlingGame : MonoBehaviourPunCallbacks
         }
         boardtexts = bto.boardtext;
     }
-
-    private void Update()
-    {
-         
-    }  
 
     void ResetPins()
     {
@@ -102,30 +97,17 @@ public class BowlingGame : MonoBehaviourPunCallbacks
     [PunRPC]
     public void Round()
     {
-       
-    }
-
-    IEnumerator roundincrement()
-    {
-        yield return new WaitForSeconds(6);
-        roundCounter++;
-        bto.boardtext[int_r1].text = "Round: "+roundCounter.ToString();
-        ResetPins();
-    }
-
-    [PunRPC]
-    public void roundController()
-    {
-         if (p1_text.text != "" && p2_text.text != "")
+        if (p1_text.text != "" && p2_text.text != "") 
         {
             if (!startround)
             {
                 roundCounter = 1;
                 bto.boardtext[int_r1].text = "Round: "+ roundCounter.ToString();
                 startround = true;                
+                Debug.Log("working!");
             }
         }
-         if (BD.ball_detected == true)
+        if (BD.ball_detected == true)
         {
             if (!updated)
             {
@@ -133,7 +115,13 @@ public class BowlingGame : MonoBehaviourPunCallbacks
                 updated = true;
             }
             StartCoroutine(Scorebool());
-        }
+        }    
+    }
+
+   
+    
+    public void roundController()
+    {       
         if (roundCounter == 1)
         {
             RoundName = bto.boardtext[int_p1].text;
@@ -184,6 +172,13 @@ public class BowlingGame : MonoBehaviourPunCallbacks
             StartCoroutine(RoundClear());
         }
     }
+     IEnumerator roundincrement()
+    {
+        yield return new WaitForSeconds(6);
+        roundCounter++;
+        bto.boardtext[int_r1].text = "Round: "+roundCounter.ToString();
+        ResetPins();
+    }
 
     IEnumerator Scorebool()
     {
@@ -206,13 +201,7 @@ public class BowlingGame : MonoBehaviourPunCallbacks
         startround = false;
     }
 
-    bool startround = false;
-
-    [PunRPC]
-    public void StartRound()
-    {
-       
-    }
+ public   bool startround = false;   
 
     public void SetP1Text(string newText)
     {
@@ -287,20 +276,23 @@ public class BowlingGame : MonoBehaviourPunCallbacks
         bto.boardtext[int_s2].text = newScore;
     }
 
-     public void ifexitplayer(int roundclear)
+     public void ifexitplayer(int roundclear) // bug
     {                
-         roundCounter = roundclear;
-        bto.boardtext[int_r1].text = roundclear.ToString(); 
-        photonView.RPC("Punifexitplayer", RpcTarget.AllBuffered, roundclear);
+        roundCounter = roundclear;
+        bto.boardtext[int_r1].text = "Round: " + roundclear.ToString(); 
+        photonView.RPC("Punifexitplayer", RpcTarget.AllBuffered, roundclear,roundCounter);
+         startround = false;
+        
     }
 
     [PunRPC]
-    public void Punifexitplayer(int roundclear)
+    public void Punifexitplayer(int roundclear ,int roundCounter)
     {
         if (bto.boardtext[int_p1].text == "" || bto.boardtext[int_p2].text == "" )
         {
             roundCounter = roundclear;
-            bto.boardtext[int_r1].text = roundclear.ToString();       
+            bto.boardtext[int_r1].text = roundclear.ToString();    
+            startround = false;   
         }
          
     }

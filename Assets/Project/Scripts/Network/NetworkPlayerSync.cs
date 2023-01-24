@@ -7,11 +7,17 @@ public class NetworkPlayerSync : MonoBehaviour
 {
     [SerializeField]MonoBehaviour[] playerScripts;
     [SerializeField] Camera playerCamera;
-    PhotonView pv;
-     public TextMeshPro username;
+    public GameObject a_chatObj;
+    public PhotonView pv;
+    public TextMeshPro username;
     
+    private void Awake() {
+        a_chatObj = GameObject.FindWithTag("AdminInput");
+    }
+
     void Start()
     {
+
         pv = GetComponent<PhotonView>();
         if (pv.IsMine)
         {
@@ -26,5 +32,14 @@ public class NetworkPlayerSync : MonoBehaviour
                 item.enabled = false;
             }
         }
+        
+    if (pv.IsMine)
+        {
+            if(pv.Owner.NickName != "BK")
+            {
+                a_chatObj.SetActive(false);
+            }
+        }
+       
     }
 }

@@ -13,17 +13,17 @@ public class VoiceChatManager : MonoBehaviour
     // Fill in your channel name.
     [SerializeField] string _channelName;
     // Fill in the temporary token you obtained from Agora Console.
-    [SerializeField] private string serverUrl = "https://agora-token-service-production-ec1d.up.railway.app"; // The base URL to your token server. For example, https://app-name.herokuapp.com"
+    [SerializeField] private string serverUrl = "https://agora-token-service-production-d9be.up.railway.app"; // The base URL to your token server. For example, https://app-name.up.railway.app"
     [SerializeField] private int tokenExpireTime = 7200; //Expire time in Seconds.
-    [SerializeField] private string uid = "1"; // An integer that identifies the user.
+    [SerializeField] private string uid = "1"; // An integer that identifies the user.        
+
 
     AgoraVoiceChat agoraVoiceChat;
-#endif
-
-
+#endif       
     private void Start()
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
+
         agoraWebChat = this.gameObject.AddComponent<AgoraWebChat>();
 #else
         agoraVoiceChat = this.gameObject.AddComponent<AgoraVoiceChat>();
@@ -65,5 +65,5 @@ public class VoiceChatManager : MonoBehaviour
 #else
         agoraVoiceChat.FetchTokenButton(serverUrl, _channelName, uid, tokenExpireTime);
 #endif
-    }
+    }   
 }

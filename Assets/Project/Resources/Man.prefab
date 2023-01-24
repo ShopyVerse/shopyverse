@@ -1781,10 +1781,6 @@ MonoBehaviour:
   getBallText: {fileID: 0}
   second_player_waitingText: {fileID: 0}
   boardtexts: []
-  Player1_text: {fileID: 0}
-  Player2_text: {fileID: 0}
-  P1_score_text: {fileID: 0}
-  P2_score_text: {fileID: 0}
   p1_score_obj: {fileID: 0}
   p2_score_obj: {fileID: 0}
   player1_obj: {fileID: 0}
@@ -1880,6 +1876,8 @@ MonoBehaviour:
   - {fileID: 1496215817749668953}
   - {fileID: 4269461204470415395}
   playerCamera: {fileID: 5019602574366777816}
+  a_chatObj: {fileID: 0}
+  pv: {fileID: 1557003169}
   username: {fileID: 3556027210008400831}
 --- !u!114 &1557003169
 MonoBehaviour:

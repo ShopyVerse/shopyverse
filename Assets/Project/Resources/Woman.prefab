@@ -201,14 +201,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BowlingText: {fileID: 0}
   getBallText: {fileID: 0}
-  Player_text1: {fileID: 0}
-  Player_text2: {fileID: 0}
-  Playerscore_text1: {fileID: 0}
-  Playerscore_text2: {fileID: 0}
-  Player1_text: {fileID: 0}
-  Player2_text: {fileID: 0}
-  P1_score_text: {fileID: 0}
-  P2_score_text: {fileID: 0}
+  second_player_waitingText: {fileID: 0}
+  boardtexts: []
+  p1_score_obj: {fileID: 0}
+  p2_score_obj: {fileID: 0}
+  player1_obj: {fileID: 0}
+  player2_obj: {fileID: 0}
   canvas: {fileID: 0}
   board_hud: {fileID: 0}
   Pv: {fileID: 8894005850109254224}
@@ -224,12 +222,12 @@ MonoBehaviour:
   BorderObj: {fileID: 0}
   border: {fileID: 0}
   roundPlayed: 0
-  roundtxt: {fileID: 0}
-  roundobj: {fileID: 0}
   _animator: {fileID: 0}
   played: 0
   PFCC: {fileID: 3561484078587014425}
   pins: []
+  BoardTextObj: {fileID: 0}
+  bto: {fileID: 0}
   canFalse: 0
 --- !u!114 &5206192025461187633
 MonoBehaviour:
@@ -262,6 +260,8 @@ MonoBehaviour:
   - {fileID: 5206192025461187633}
   - {fileID: 9157924626831380460}
   playerCamera: {fileID: 2447317095216041067}
+  a_chatObj: {fileID: 0}
+  pv: {fileID: 0}
   username: {fileID: 3621316922201209595}
 --- !u!114 &8894005850109254224
 MonoBehaviour:

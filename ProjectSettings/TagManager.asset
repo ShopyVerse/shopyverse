@@ -19,6 +19,7 @@ TagManager:
   - Ball
   - Playland
   - BoardText
+  - AdminInput
   layers:
   - Default
   - TransparentFX
