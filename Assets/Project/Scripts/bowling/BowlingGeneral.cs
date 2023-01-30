@@ -32,11 +32,14 @@ public class BowlingGeneral : MonoBehaviourPunCallbacks
 
     bool isLoggined = false;
 
-    public GameObject myB_Ball;
+    public GameObject myB_Ball;    
+    public GameObject rail;    
+    public GameObject rails_object;    
 
     public bool ball_Actived;
 
     public GameObject GameProps;
+    public GameObject firstpoint;
 
     public float speed = 1000;
 
@@ -261,22 +264,27 @@ public class BowlingGeneral : MonoBehaviourPunCallbacks
         if (Pv.IsMine)
         {
             Pv.RPC("GetParent", RpcTarget.All, null);
+            
             shooting = false;
             rb.isKinematic = true;
             myB_Ball.transform.position = GameProps.transform.position;
+            rail.transform.position = rails_object.transform.position;
             Pv.RPC("BallDeactive", RpcTarget.All, null);
             ball_Actived = false;
             roundPlayed = false;
+            Pv.RPC("GetParent2", RpcTarget.All, null);
         }
     }
 
     IEnumerator ballCanGo()
     {
-        yield return new WaitForSeconds(2f);
         pins = border.pins;
-        Pv.RPC("NullParent", RpcTarget.All, null);
+        yield return new WaitForSeconds(2f);    
+        Pv.RPC("NullParent2", RpcTarget.All, null);
+        Pv.RPC("NullParent", RpcTarget.All, null);         
         rb.isKinematic = false;
-        rb.AddForce(ThrowingPoint.transform.forward * force);
+       // rb.AddForce(ThrowingPoint.transform.forward * force);
+      
         shooting = true;
         roundPlayed = true;
     }
@@ -331,10 +339,29 @@ public class BowlingGeneral : MonoBehaviourPunCallbacks
         myB_Ball.transform.parent = GameProps.transform;
     }
 
+    Quaternion rot = new Quaternion(0f,0f,0f,0f);
+
+    [PunRPC]
+    public void GetParent2()
+    {
+        rail.transform.parent = rails_object.transform;
+        rail.transform.localPosition = new Vector3(0,0,0);
+        rail.transform.rotation = rot;
+       
+
+    }
+
     [PunRPC]
     public void NullParent()
     {
-        myB_Ball.transform.SetParent(null);
+        //myB_Ball_Parent.transform.SetParent(null);
+         myB_Ball.transform.parent = firstpoint.transform;     
+        myB_Ball.transform.position = firstpoint.transform.position;    
+    }
+    [PunRPC]
+    public void NullParent2()
+    {
+        rail.transform.SetParent(null);        
     }
 
     [PunRPC]
@@ -403,5 +430,5 @@ public class BowlingGeneral : MonoBehaviourPunCallbacks
         isLoggined = false;
         score = 0;
         played = false;
-    }
+    }  
 }

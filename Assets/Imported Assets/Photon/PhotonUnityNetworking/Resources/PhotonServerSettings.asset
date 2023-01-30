@@ -58,6 +58,8 @@ MonoBehaviour:
   - UpdateP2Text
   - UpdateToClearP1Text
   - UpdateToClearP2Text
+  - NullParent2
+  - GetParent2
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
