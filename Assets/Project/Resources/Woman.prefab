@@ -211,7 +211,7 @@ MonoBehaviour:
   canvas: {fileID: 0}
   board_hud: {fileID: 0}
   Pv: {fileID: 8894005850109254224}
-  nps: {fileID: 0}
+  nps: {fileID: 1472164990441366009}
   myB_Ball: {fileID: 343867120020509063}
   rail: {fileID: 1249001987508264874}
   rails_object: {fileID: 5286667041025674211}
@@ -264,7 +264,6 @@ MonoBehaviour:
   - {fileID: 5206192025461187633}
   - {fileID: 9157924626831380460}
   playerCamera: {fileID: 2447317095216041067}
-  a_chatObj: {fileID: 0}
   pv: {fileID: 0}
   username: {fileID: 3621316922201209595}
 --- !u!114 &8894005850109254224
@@ -3833,6 +3832,10 @@ PrefabInstance:
       propertyPath: _animator
       value: 
       objectReference: {fileID: 6089386009296738709}
+    - target: {fileID: 4316110009701543748, guid: 41832f63d6e7f5b479a011be452b812f, type: 3}
+      propertyPath: m_SynchronizeLayers.Array.data[0].SynchronizeType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7069783773936550444, guid: 41832f63d6e7f5b479a011be452b812f, type: 3}
       propertyPath: ObservedComponents.Array.size
       value: 3

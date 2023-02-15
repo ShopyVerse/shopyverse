@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
   AppSettings:
-    AppIdRealtime: fa1ae0e6-8c3c-4209-9e46-ee076d5fb98f
+    AppIdRealtime: 00246f5c-84f9-4ee4-b7e7-df4d56fb7e6e
     AppIdFusion: 
     AppIdChat: 
     AppIdVoice: 
@@ -26,7 +26,7 @@ MonoBehaviour:
     Protocol: 0
     EnableProtocolFallback: 1
     AuthMode: 0
-    EnableLobbyStatistics: 0
+    EnableLobbyStatistics: 1
     NetworkLogging: 1
   DevRegion: tr
   PunLogging: 0
@@ -34,7 +34,6 @@ MonoBehaviour:
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
-  - actorinc
   - BallActive
   - BallDeactive
   - ClearText
@@ -45,8 +44,9 @@ MonoBehaviour:
   - EnableSoldLabel
   - Fire
   - GetParent
-  - KickPlayer
+  - GetParent2
   - NullParent
+  - NullParent2
   - Punifexitplayer
   - RespawnSpaceship
   - Round
@@ -58,8 +58,6 @@ MonoBehaviour:
   - UpdateP2Text
   - UpdateToClearP1Text
   - UpdateToClearP2Text
-  - NullParent2
-  - GetParent2
   DisableAutoOpenWizard: 1
   ShowSettings: 1
-  DevRegionSetOnce: 0
+  DevRegionSetOnce: 1

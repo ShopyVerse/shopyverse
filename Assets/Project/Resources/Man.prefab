@@ -1553,9 +1553,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.01
+  near clip plane: 0.05
   far clip plane: 75
-  field of view: 60
+  field of view: 65
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -1784,8 +1784,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4765807378127388125}
-  - component: {fileID: 2551824442013994065}
   - component: {fileID: 1496215817749669799}
+  - component: {fileID: 5007688255335518242}
   - component: {fileID: 1496215817749669798}
   - component: {fileID: 1496215817749668953}
   - component: {fileID: 1557003170}
@@ -1830,7 +1830,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2551824442013994065
+--- !u!95 &1496215817749669799
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5289579071960229735}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 0f73c851d27de6240ac60d06fc3e861d, type: 3}
+  m_Controller: {fileID: 9100000, guid: bd8c33b6e851f8f4bbe6f78bf15f85ad, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5007688255335518242
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1853,7 +1873,7 @@ MonoBehaviour:
   canvas: {fileID: 0}
   board_hud: {fileID: 0}
   Pv: {fileID: 1557003169}
-  nps: {fileID: 0}
+  nps: {fileID: 1557003170}
   myB_Ball: {fileID: 98163120214811834}
   rail: {fileID: 6797973868781142626}
   rails_object: {fileID: 3976957659505075418}
@@ -1875,26 +1895,6 @@ MonoBehaviour:
   BoardTextObj: {fileID: 0}
   bto: {fileID: 0}
   canFalse: 0
---- !u!95 &1496215817749669799
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5289579071960229735}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 0f73c851d27de6240ac60d06fc3e861d, type: 3}
-  m_Controller: {fileID: 9100000, guid: bd8c33b6e851f8f4bbe6f78bf15f85ad, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!143 &1496215817749669798
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1944,7 +1944,6 @@ MonoBehaviour:
   - {fileID: 1496215817749668953}
   - {fileID: 4269461204470415395}
   playerCamera: {fileID: 5019602574366777816}
-  a_chatObj: {fileID: 0}
   pv: {fileID: 1557003169}
   username: {fileID: 3556027210008400831}
 --- !u!114 &1557003169
@@ -2164,7 +2163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb77729e59645ae49bc5ec55ba5a0f63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BG: {fileID: 2551824442013994065}
+  BG: {fileID: 0}
   metacoinsValueText: {fileID: 745168398502457895}
 --- !u!1 &5431679288219698687
 GameObject:
@@ -5080,11 +5079,19 @@ PrefabInstance:
     - target: {fileID: 3839190834302575926, guid: 41832f63d6e7f5b479a011be452b812f, type: 3}
       propertyPath: BG
       value: 
-      objectReference: {fileID: 2551824442013994065}
+      objectReference: {fileID: 5007688255335518242}
     - target: {fileID: 3839190834302575926, guid: 41832f63d6e7f5b479a011be452b812f, type: 3}
       propertyPath: _animator
       value: 
       objectReference: {fileID: 3786522485499177188}
+    - target: {fileID: 3839190834302575926, guid: 41832f63d6e7f5b479a011be452b812f, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4316110009701543748, guid: 41832f63d6e7f5b479a011be452b812f, type: 3}
+      propertyPath: m_SynchronizeLayers.Array.data[0].SynchronizeType
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 41832f63d6e7f5b479a011be452b812f, type: 3}
 --- !u!4 &96338931364338504 stripped

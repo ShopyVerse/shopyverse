@@ -16,12 +16,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     [SerializeField] GameObject login;
 
     [SerializeField] VoiceChatManager agoraChat;
-    [SerializeField] TMP_InputField a_chat;
-    public int actorNmbr;
-    public string name;
-    public PhotonView photonView;
-    Dictionary<string, Player> players;
-    
+    [SerializeField] TMP_InputField a_chat;    
 
     private void Awake()
     {
@@ -50,10 +45,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         {
           PhotonNetwork.Destroy(gameObject);
         }
-        PhotonNetwork.ConnectUsingSettings();
-        
-
-        actorNmbr = 1;
+        PhotonNetwork.ConnectUsingSettings();   
         
 
     }
@@ -77,31 +69,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         agoraChat.Join();
         
         CreatePlayer();
-       
-        Player player = PhotonNetwork.CurrentRoom.GetPlayer(actorNmbr);
-        
-        players = new Dictionary<string, Player>();
-        players.Add(player.NickName,player);
-        photonView.RPC("actorinc", RpcTarget.All, actorNmbr);
-        name = a_chat.text;
-        //            
-    }
-    [PunRPC]
-    public void actorinc(int actorNmbr)
-    {
-        actorNmbr += 1000;
-    }
-    public void Ban() 
-    {        
-        name = a_chat.text;
-        photonView.RPC("KickPlayer", players[name]);            
-    }
-    
-
-    [PunRPC]
-    public void KickPlayer()
-    {
-         PhotonNetwork.LeaveRoom(); 
+             
     }
     private void ChangeScene(string sceneName)
     {

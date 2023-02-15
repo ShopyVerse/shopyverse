@@ -46,7 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfb5284b302a24c43b279a35aac9ea39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectName: 
   tokenId: 4
+  priceTag: 0
+  soldLabel: {fileID: 0}
   clothingOjects: []
 --- !u!65 &4382776819699910506
 BoxCollider:
