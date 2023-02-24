@@ -8,11 +8,13 @@ using UnityEngine;
 
 public class LoginRegister : MonoBehaviour
 {
-    [SerializeField]
-    TMP_InputField _emailInput;
+    public static LoginRegister Instance;
 
     [SerializeField]
-    TMP_InputField _passwordInput;
+    private TMP_InputField _emailInput;
+
+    [SerializeField]
+    private TMP_InputField _passwordInput ;
 
     [SerializeField]
     NetworkPlayerSync _networkPlayerSync;
@@ -21,7 +23,7 @@ public class LoginRegister : MonoBehaviour
     PanelControl _panelControl;
 
     [SerializeField]
-    TMP_InputField _username;
+    private TMP_InputField _username ;
 
     [SerializeField]
     TMP_InputField aurora;
@@ -47,7 +49,7 @@ public class LoginRegister : MonoBehaviour
         var request =
             new RegisterPlayFabUserRequest()
             {
-                DisplayName = _username.text,
+                DisplayName = GetUsername() ,//_username.text,
                 Email = _emailInput.text,
                 Password = _passwordInput.text,
                 RequireBothUsernameAndEmail = false
@@ -58,7 +60,6 @@ public class LoginRegister : MonoBehaviour
             OnError
         );
     }
-
     public void LoginButton()
     {
         var request =
@@ -77,13 +78,12 @@ public class LoginRegister : MonoBehaviour
             OnError
         );
     }
-
     public void ResetPasswordButton()
     {
         var request =
             new SendAccountRecoveryEmailRequest()
             {
-                Email = _emailInput.text,
+                Email =_emailInput.text,
                 TitleId = playFabSharedSettings.TitleId
             };
         PlayFabClientAPI.SendAccountRecoveryEmail (
@@ -92,14 +92,12 @@ public class LoginRegister : MonoBehaviour
             OnError
         );
     }
-
     void OnError(PlayFabError error)
     {
         Debug.Log(error.ErrorMessage);
         Debug.Log(error.GenerateErrorReport());
         _errorText.text =error.ErrorMessage;
     }
-
     void OneRegisterSucces(RegisterPlayFabUserResult result)
     {
         Debug.Log("Register and Logged Succesful" + result);
@@ -109,14 +107,13 @@ public class LoginRegister : MonoBehaviour
         _panelControl.LoginPanel();
         UpdateCustomData();        
     }
-
     void OnLoginSucces(LoginResult result)
     {
         Debug.Log("Login Succesful" + result);
         string name = null;
         if (result.InfoResultPayload != null)
         {
-            name = result.InfoResultPayload.PlayerProfile.DisplayName;
+            name = result.InfoResultPayload.PlayerProfile.DisplayName + " " + GetUsername();
             PhotonNetwork.NickName = name;
             PlayerPrefs.SetString("Username", name);
         }
@@ -124,12 +121,10 @@ public class LoginRegister : MonoBehaviour
         _popUp.text = "Welcome" + " " + PlayerPrefs.GetString("Username");
         StartCoroutine(OnLoginNetwork());
     }
-
     void OnPasswordReset(SendAccountRecoveryEmailResult result)
     {
         Debug.Log("Send Recovery Succesful" + result);
     }
-
     IEnumerator OnLoginNetwork()
     {
         yield return new WaitForSeconds(2f);
@@ -155,5 +150,29 @@ public class LoginRegister : MonoBehaviour
     public void OnUpdateCustomDataError(PlayFabError error)
     {
         Debug.LogError(error.GenerateErrorReport());
+    }
+    private void Start(){
+        if(Instance == null){
+            Instance = this;
+        }
+        else{
+            Destroy(gameObject);
+        }
+    }
+
+    public void SetEmail(string email){
+        this._emailInput.text = email;
+    }
+
+    public void SetPassword(string password){
+        this._passwordInput.text = password;
+    }
+
+    public void SetUsername(string username){
+        this._username.text = username;
+    }
+
+    public string GetUsername(){
+        return this._username.text;
     }
 }
