@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Vitrin.PlayerController
 {
-    [RequireComponent(typeof (CharacterController))]
+    [RequireComponent(typeof(CharacterController))]
     [DisallowMultipleComponent]
     public class PlayerController : MonoBehaviour
     {
@@ -14,12 +14,17 @@ namespace Vitrin.PlayerController
         Animator _animator;
 
         public Button handButton;
+        //camera
+        public Transform cam;
 
         [SerializeField]
         float verticalSpeed;
 
         [SerializeField]
         float horizontalSpeed;
+        //turns
+        public float turnSmoothTime = 0.1f;
+        float turnSmoothVelocity = 0.1f;
 
         void Start()
         {
@@ -48,23 +53,9 @@ namespace Vitrin.PlayerController
 
         void Input_Controller()
         {
-            float horizontal = SimpleInput.GetAxis("Horizontal");
-            float vertical = SimpleInput.GetAxis("Vertical");
-            if (
-                vertical < 0 && horizontal < -0.1f ||
-                horizontal > 0.1f && vertical < 0
-            )
-            {
-                horizontal = 0.1f;
-            }
-
-            Vector3 vector =
-                transform.right *
-                horizontal *
-                horizontalSpeed *
-                Time.deltaTime +
-                transform.forward * vertical * verticalSpeed * Time.deltaTime;
-            Movement (vector);
+            float horizontal = Input.GetAxisRaw("Horizontal");
+            float vertical = Input.GetAxisRaw("Vertical");
+            Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
             if (!Input.GetKey(KeyCode.LeftShift))
             {
@@ -76,12 +67,23 @@ namespace Vitrin.PlayerController
                 vertical = Mathf.Clamp(vertical, -0.5f, 1f);
                 verticalSpeed = 4f;
             }
-            AnimatorMovement (horizontal, vertical);
+            //test
+            if (direction.magnitude >= 0.1f)
+                Movement(direction);
+
+            AnimatorMovement(horizontal, vertical);
         }
 
-        void Movement(Vector3 vector)
+        void Movement(Vector3 direction)
         {
-            _characterController.Move (vector);
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+
+            _characterController.Move(moveDir.normalized * verticalSpeed * Time.deltaTime);
+
         }
 
         void AnimatorMovement(float horizontal, float vertical)

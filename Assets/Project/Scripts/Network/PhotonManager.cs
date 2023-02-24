@@ -5,8 +5,14 @@ using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
+using Vitrin.PlayerController;
+
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
+    //The Camera
+    public Cinemachine.CinemachineFreeLook CMFreeLook;
+    public Camera mainCamera;
+
     public static PhotonManager _networkManager;
     [SerializeField] string roomName;
     [SerializeField] GameObject pcObject;
@@ -152,7 +158,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
             if (gender != null)
             {
-                PhotonNetwork.Instantiate(gender, points[value].transform.position, Quaternion.identity);
+                GameObject player = PhotonNetwork.Instantiate(gender, points[value].transform.position, Quaternion.identity);
+               //toss to cam func
+                SetCam(player);
                 return;
             }
             else
@@ -219,6 +227,19 @@ public class PhotonManager : MonoBehaviourPunCallbacks
                     Debug.LogError("ConnectUsingSettings failed");
                 }
             }
+        }
+    }
+
+    //Set CMFreeLook to follow player
+    private void SetCam(GameObject player)
+    {
+       if (player.GetComponent<PhotonView>().IsMine)
+       {
+            // set the player to follow the camera
+            CMFreeLook.Follow = player.transform;
+            CMFreeLook.LookAt = player.transform;
+        //send the code below to movement method
+        player.GetComponent<PlayerController>().cam = mainCamera.transform;
         }
     }
 }
