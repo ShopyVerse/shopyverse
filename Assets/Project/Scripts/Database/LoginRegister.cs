@@ -49,7 +49,7 @@ public class LoginRegister : MonoBehaviour
         var request =
             new RegisterPlayFabUserRequest()
             {
-                DisplayName = GetUsername() ,//_username.text,
+                DisplayName = _username.text,
                 Email = _emailInput.text,
                 Password = _passwordInput.text,
                 RequireBothUsernameAndEmail = false
@@ -113,7 +113,7 @@ public class LoginRegister : MonoBehaviour
         string name = null;
         if (result.InfoResultPayload != null)
         {
-            name = result.InfoResultPayload.PlayerProfile.DisplayName + " " + GetUsername();
+            name = result.InfoResultPayload.PlayerProfile.DisplayName;
             PhotonNetwork.NickName = name;
             PlayerPrefs.SetString("Username", name);
         }
@@ -174,5 +174,11 @@ public class LoginRegister : MonoBehaviour
 
     public string GetUsername(){
         return this._username.text;
+    }
+
+    public void FillTextComponents(string email, string password)
+    {
+        _emailInput.text = email;
+        _passwordInput.text = password;
     }
 }
