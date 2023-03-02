@@ -10,6 +10,10 @@ public static class BridgeInternal
 
     [DllImport("__Internal")]
     public static extern void RequestFetchItemsListed(string storeAddress);
+
+    [DllImport("__Internal")]
+    public static extern void GetEmailPassword();
+
 }
 
 public static class Bridge
@@ -27,4 +31,13 @@ public static class Bridge
         BridgeInternal.RequestFetchItemsListed(storeAddress);
 #endif
     }
+
+    public static void GetEmailPassword() 
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+    BridgeInternal.GetEmailPassword();
+#endif
+    }
+
+
 }

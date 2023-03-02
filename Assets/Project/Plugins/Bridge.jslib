@@ -8,4 +8,8 @@ mergeInto(LibraryManager.library, {
     await fetchItemsListed(UTF8ToString(storeAddress));
   },
   
+  GetEmailPassword: async function(){
+    await GetEmailPassword();
+  },
+
 });
