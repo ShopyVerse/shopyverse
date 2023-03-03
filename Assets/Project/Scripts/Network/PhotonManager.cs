@@ -5,8 +5,14 @@ using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
+using Vitrin.PlayerController;
+
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
+    //The Camera
+    public Cinemachine.CinemachineFreeLook CMFreeLook;
+    public Camera mainCamera;
+
     public static PhotonManager _networkManager;
     [SerializeField] string roomName;
     [SerializeField] GameObject pcObject;
@@ -21,15 +27,15 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public string name;
     public PhotonView photonView;
     Dictionary<string, Player> players;
-    
+
 
     private void Awake()
     {
         PhotonNetwork.SendRate = 1;
         // PhotonNetwork.SendRateOnSerialize = 10;
 #if UNITY_WEBGL
-            vrObject.SetActive(false);
-            pcObject.SetActive(true);     
+        vrObject.SetActive(false);
+        pcObject.SetActive(true);
 #endif
 
 #if UNITY_ANDROID
@@ -48,13 +54,13 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         }
         else
         {
-          PhotonNetwork.Destroy(gameObject);
+            PhotonNetwork.Destroy(gameObject);
         }
         PhotonNetwork.ConnectUsingSettings();
-        
+
 
         actorNmbr = 1;
-        
+
 
     }
 
@@ -75,13 +81,13 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         game.SetActive(true);
 
         agoraChat.Join();
-        
+
         CreatePlayer();
-       
+
         Player player = PhotonNetwork.CurrentRoom.GetPlayer(actorNmbr);
-        
+
         players = new Dictionary<string, Player>();
-        players.Add(player.NickName,player);
+        players.Add(player.NickName, player);
         photonView.RPC("actorinc", RpcTarget.All, actorNmbr);
         name = a_chat.text;
         //            
@@ -91,17 +97,17 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         actorNmbr += 1000;
     }
-    public void Ban() 
-    {        
+    public void Ban()
+    {
         name = a_chat.text;
-        photonView.RPC("KickPlayer", players[name]);            
+        photonView.RPC("KickPlayer", players[name]);
     }
-    
+
 
     [PunRPC]
     public void KickPlayer()
     {
-         PhotonNetwork.LeaveRoom(); 
+        PhotonNetwork.LeaveRoom();
     }
     private void ChangeScene(string sceneName)
     {
@@ -126,10 +132,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         //ChangeScene("Environment_2");
         yield return null;
         PhotonNetwork.JoinRoom(roomName);
-       
+
 
     }
-    
+
 
     public void Login()
     {
@@ -150,15 +156,17 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
 #if UNITY_WEBGL
 
-            if (gender != null)
-            {
-                PhotonNetwork.Instantiate(gender, points[value].transform.position, Quaternion.identity);
-                return;
-            }
-            else
-            {
-                Debug.Log(gender + "qqq");
-            }
+        if (gender != null)
+        {
+            GameObject player = PhotonNetwork.Instantiate(gender, points[value].transform.position, Quaternion.identity);
+            //toss to cam func
+            SetCam(player);
+            return;
+        }
+        else
+        {
+            Debug.Log(gender + "qqq");
+        }
 #elif UNITY_ANDROID
 
             //Vector3 positionForVr = new Vector3(points[value].transform.position.x, points[value].transform.position.y - 0.4f, points[value].transform.position.z);
@@ -181,7 +189,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     }
 
     //------------ adding news
-    
+
     public override void OnDisconnected(DisconnectCause cause)
     {
         if (this.CanRecoverFromDisconnect(cause))
@@ -210,7 +218,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.ReconnectAndRejoin())
         {
             Debug.LogError("ReconnectAndRejoin failed, trying Reconnect");
-             StartCoroutine(JoinRoom());
+            StartCoroutine(JoinRoom());
             if (!PhotonNetwork.Reconnect())
             {
                 Debug.LogError("Reconnect failed, trying ConnectUsingSettings");
@@ -219,6 +227,19 @@ public class PhotonManager : MonoBehaviourPunCallbacks
                     Debug.LogError("ConnectUsingSettings failed");
                 }
             }
+        }
+    }
+
+    //Set CMFreeLook to follow player
+    private void SetCam(GameObject player)
+    {
+        if (player.GetComponent<PhotonView>().IsMine)
+        {
+            // set the player to follow the camera
+            CMFreeLook.Follow = player.transform;
+            CMFreeLook.LookAt = player.transform.GetChild(0);
+            //send the code below to movement method
+            player.GetComponent<PlayerController>().cam = mainCamera.transform;
         }
     }
 }
