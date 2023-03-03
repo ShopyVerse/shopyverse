@@ -1703,7 +1703,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handButton: {fileID: 0}
-  cam: {fileID: 0}
   verticalSpeed: 9
   horizontalSpeed: 3
   turnSmoothTime: 0.1

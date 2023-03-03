@@ -15,7 +15,7 @@ namespace Vitrin.PlayerController
 
         public Button handButton;
         //camera
-        public Transform cam;
+        private Transform cam;
 
         [SerializeField]
         float verticalSpeed;
@@ -95,6 +95,11 @@ namespace Vitrin.PlayerController
         public void HiAnimations() // For Mobile
         {
             _animator.SetTrigger("RaiseHand");
+        }
+
+        public void SetCam(Transform cam)
+        {
+            this.cam = cam;
         }
     }
 }

@@ -239,7 +239,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
             CMFreeLook.Follow = player.transform;
             CMFreeLook.LookAt = player.transform.GetChild(0);
             //send the code below to movement method
-            player.GetComponent<PlayerController>().cam = mainCamera.transform;
+            player.GetComponent<PlayerController>().SetCam(mainCamera.transform);
         }
     }
 }
