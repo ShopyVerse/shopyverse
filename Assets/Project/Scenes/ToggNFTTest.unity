@@ -972,6 +972,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -66
       objectReference: {fileID: 0}
+    - target: {fileID: 7069783773936550444, guid: ef89117ba3d1a7541ae89b9023d024df, type: 3}
+      propertyPath: sceneViewId
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7161107414616048642, guid: ef89117ba3d1a7541ae89b9023d024df, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -1216,6 +1220,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1153421843, guid: 81d12ce1bf63dba42be70d31cb7024ca, type: 3}
+      propertyPath: sceneViewId
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1421759917002093145, guid: 81d12ce1bf63dba42be70d31cb7024ca, type: 3}
       propertyPath: m_RootOrder
       value: 4
