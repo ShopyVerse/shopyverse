@@ -20,6 +20,7 @@ TagManager:
   - Playland
   - BoardText
   - AdminInput
+  - FreeLook
   layers:
   - Default
   - TransparentFX

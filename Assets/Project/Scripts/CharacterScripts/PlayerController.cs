@@ -16,6 +16,8 @@ namespace Vitrin.PlayerController
         public Button handButton;
         //camera
         private Transform cam;
+        private Cinemachine.CinemachineFreeLook freelook;
+        private int lockCam;
 
         [SerializeField]
         float verticalSpeed;
@@ -30,6 +32,7 @@ namespace Vitrin.PlayerController
         {
             _characterController = GetComponent<CharacterController>();
             _animator = GetComponent<Animator>();
+            lockCam = 0;
             // handButton = // for mobile
             //     GameObject
             //         .FindGameObjectWithTag("handButton")
@@ -41,6 +44,15 @@ namespace Vitrin.PlayerController
         {
             PlayerAnimations();
             Input_Controller();
+            if (Input.GetMouseButtonDown(1))
+            {
+                lockCam++;
+
+                if(lockCam%2 == 1)
+                   freelook.enabled = false;
+                else
+                   freelook.enabled = true;
+            }
         }
 
         void PlayerAnimations()
@@ -100,6 +112,11 @@ namespace Vitrin.PlayerController
         public void SetCam(Transform cam)
         {
             this.cam = cam;
+        }
+
+        public void SetFreeLook(Cinemachine.CinemachineFreeLook freelook)
+        {
+            this.freelook = freelook;
         }
     }
 }

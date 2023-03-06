@@ -9,7 +9,6 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class CharacterClothing : MonoBehaviour
 {
     [SerializeField] int distance;
-
     [SerializeField] GameObject hatContainer;
 
     [SerializeField] GameObject clothingUI;
@@ -22,6 +21,7 @@ public class CharacterClothing : MonoBehaviour
     List<GameObject> clothesCurrentlyWearing = new List<GameObject>();
 
     private XRRayInteractor rayInteractor = null;
+    private bool lockcam = true;
 
     private void Awake()
     {
