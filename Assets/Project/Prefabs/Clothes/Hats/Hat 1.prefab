@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8769689037067136086}
-  - component: {fileID: 8769689037067136087}
   - component: {fileID: 8769689037067136084}
+  - component: {fileID: 1613661238790390190}
+  - component: {fileID: 1967249883315272517}
   m_Layer: 0
   m_Name: Hat 1
   m_TagString: Untagged
@@ -34,20 +35,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8769689037067136087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8769689037067136089}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfb5284b302a24c43b279a35aac9ea39, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tokenId: 1
-  clothingOjects: []
 --- !u!65 &8769689037067136084
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -61,6 +48,33 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.4066894, y: 0.20371471, z: 0.4170978}
   m_Center: {x: -0.005204439, y: -0.04423804, z: -0.046840608}
+--- !u!114 &1613661238790390190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8769689037067136089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca3ea2ceb510ca04681d0a0605aa07c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1967249883315272517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8769689037067136089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3765fc91f9e58d84784f7a63c9185ec9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 1
+  name: Heisenberg Hat
+  price: 5
 --- !u!1001 &8769689036769685465
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -12,4 +12,8 @@ mergeInto(LibraryManager.library, {
     await GetEmailPassword();
   },
 
+  BuyWithTon: async function(){
+    await BuyWithTon();
+  },
+
 });

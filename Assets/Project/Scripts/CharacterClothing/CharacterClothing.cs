@@ -9,20 +9,15 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class CharacterClothing : MonoBehaviour
 {
     [SerializeField] int distance;
-
     [SerializeField] GameObject hatContainer;
-
     [SerializeField] GameObject clothingUI;
     [SerializeField] TMP_Text clothesTxt;
     [SerializeField] TMP_Text priceTxt;
     [SerializeField] Button tryBtn;
     [SerializeField] Button buyBtn;
-
     List<GameObject> clothesCurrentlyTryOn = new List<GameObject>();
     List<GameObject> clothesCurrentlyWearing = new List<GameObject>();
-
     private XRRayInteractor rayInteractor = null;
-
     private void Awake()
     {
         rayInteractor = GetComponent<XRRayInteractor>();
@@ -32,7 +27,6 @@ public class CharacterClothing : MonoBehaviour
         {
             clothes.SetActive(true);
         }
-
         InitializeHats();
     }
 
@@ -52,15 +46,49 @@ public class CharacterClothing : MonoBehaviour
         if (Physics.Raycast(ray, out hit, distance))
         {
             Debug.DrawLine(ray.origin, hit.point, Color.red, 1f);
+            
+            ClickableItem item;
+            if(hit.collider.TryGetComponent<ClickableItem>(out item)){
+                
+                var clickedTonHat = item.GetComponent<TonHat>();
+                
+                TonActivateClothingUI(clickedTonHat);
 
+                tryBtn.onClick.AddListener(() => {
+    
+                foreach (var tonHat in FindObjectsOfType<TryHat>(true)) {
+                 tonHat.gameObject.SetActive(false);
+                 }
+                var clickedTonHatID = clickedTonHat.id;
+                foreach (var tonHat in FindObjectsOfType<TonHat>(true)) {
+                var tonHatID = tonHat.id;
+                if (tonHatID == clickedTonHatID && tonHat.GetComponent<ClickableItem>() == null) {
+                tonHat.gameObject.SetActive(true);
+                break; // Exit loop after activating the clicked TonHat object
+                }
+    }
+});
+              
+                buyBtn.onClick.AddListener(()=>{
+                    Api.Instance.RequestBuyWithTon();
+                    buyBtn.onClick.RemoveAllListeners();
+                });
+                //Api.Instance.RequestBuyWithTon();
+            }       
             Clothes clothes;
             if (hit.collider.TryGetComponent<Clothes>(out clothes))
-            {
+            {                
                 ActivateClothingUI(clothes);
             }
         }
     }
-
+    public void TonActivateClothingUI(TonHat hat){
+        clothingUI.SetActive(true);
+        buyBtn.gameObject.SetActive(true);
+        clothesTxt.SetText(hat.name);
+        priceTxt.SetText(hat.price.ToString());
+        tryBtn.onClick.RemoveAllListeners();
+    }
     public void VRActivation()
     {
         if (rayInteractor != null)
@@ -96,7 +124,6 @@ public class CharacterClothing : MonoBehaviour
                 priceTxt.SetText("SOLD");
             }
         }
-
 #if UNITY_WEBGL
         buyBtn.onClick.RemoveAllListeners();
         SetBuyButtonListeners(clothes);
@@ -107,10 +134,7 @@ public class CharacterClothing : MonoBehaviour
 
         if (clothes is NFT)
             tryBtn.gameObject.SetActive(false);
-
-
     }
-
     void SetTryButtonListeners(Clothes clothes)
     {
         // TRY Button behaviors
@@ -133,15 +157,14 @@ public class CharacterClothing : MonoBehaviour
     void SetBuyButtonListeners(Clothes clothes)
     {
         buyBtn.onClick.AddListener(() =>
-        {
-            Api.Instance.RequestBuyNFT(this, clothes);
+        {            
+            Api.Instance.RequestBuyWithTon();
+            //Api.Instance.RequestBuyNFT(this, clothes);
         });
     }
 
     public void ApplyClothing(Clothes clothes)
     {
-
-
         Debug.Log("Wallet Transaction Completed");
         tryBtn.onClick?.Invoke();
         clothesCurrentlyWearing.Clear();
@@ -166,7 +189,6 @@ public class CharacterClothing : MonoBehaviour
             clothingUI.SetActive(false);
         }
     }
-
     void TakeOffTryOnClothing()
     {
         foreach (GameObject tryOnClothes in clothesCurrentlyTryOn)
@@ -179,23 +201,19 @@ public class CharacterClothing : MonoBehaviour
             wearingClothes.SetActive(true);
         }
     }
-
     void InitializeHats()
     {
         if (ClothingInitializer.Instance == null)
             return;
-
         foreach (GameObject go in ClothingInitializer.Instance.Hats)
         {
             Clothes clothes;
             if (go.TryGetComponent<Clothes>(out clothes))
             {
                 GameObject hat = Instantiate(go, hatContainer.transform);
-
                 hat.transform.localPosition = Vector3.zero;
                 hat.SetActive(false);
                 Destroy(hat.GetComponent<Clothes>());
-
                 clothes.clothingOjects.Add(hat);
             }
         }

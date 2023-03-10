@@ -25,6 +25,12 @@ public class Api : MonoBehaviour
 
     }
 
+    public void RequestBuyWithTon()
+    {       
+        Debug.Log("buy with ton calisti");
+        Bridge.BuyWithTon();
+    }
+
     public void RequestFetchItemsListed(StoreInventory storeInventory)
     {
         InProgressFetchItemsListed.Add(storeInventory);
@@ -36,8 +42,6 @@ public class Api : MonoBehaviour
         ReceiveFetchItemsListed(storeInventory.StoreAddress +":"+"11,12");
 #endif
     }
-
-
     public void ReceiveBuyNFT()
     {
         InProgressBuy[0].Key.ApplyClothing(InProgressBuy[0].Value);

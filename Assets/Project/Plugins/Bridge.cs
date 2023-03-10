@@ -14,6 +14,8 @@ public static class BridgeInternal
     [DllImport("__Internal")]
     public static extern void GetEmailPassword();
 
+    [DllImport("__Internal")]
+    public static extern void BuyWithTon();
 }
 
 public static class Bridge
@@ -22,6 +24,14 @@ public static class Bridge
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
         BridgeInternal.BuyNFT(tokenId);
+#endif
+    }
+
+
+    public static void BuyWithTon()
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        BridgeInternal.BuyWithTon();
 #endif
     }
 
@@ -38,6 +48,4 @@ public static class Bridge
     BridgeInternal.GetEmailPassword();
 #endif
     }
-
-
 }
