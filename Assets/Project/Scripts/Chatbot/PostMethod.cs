@@ -8,6 +8,7 @@ using System.Collections.Generic;
 public class PostMethod : MonoBehaviour
 {
     TMP_InputField outputArea;
+    TMP_InputField inputArea;
     private string username;
     private string text;
 
@@ -15,7 +16,11 @@ public class PostMethod : MonoBehaviour
     {
         username = GameObject.Find("DisplayName").GetComponent<TextMeshPro>().text;
         outputArea = GameObject.Find("OutputArea").GetComponent<TMP_InputField>();
+        inputArea = GameObject.Find("InputArea").GetComponent<TMP_InputField>();
+        
         GameObject.Find("PostButton").GetComponent<Button>().onClick.AddListener(PostData);
+    
+    
     }
 
     void PostData() => StartCoroutine(PostData_Coroutine());
@@ -23,7 +28,7 @@ public class PostMethod : MonoBehaviour
     IEnumerator PostData_Coroutine()
     {
         Debug.Log("Username " + this.username + " " + outputArea.text);
-        this.text = outputArea.text;
+        this.text = inputArea.text;
         string uri = "https://shopyverse-backend.herokuapp.com/rasatext";
       
         var dataToPost = new PostedData() { username = this.username, text = this.text };
@@ -45,6 +50,7 @@ public class PostMethod : MonoBehaviour
     {
         string[] recieve = received.Split("\"");
         return recieve[7];
+        
     }
 
     private UnityWebRequest CreateRequest(string path, RequestType type = RequestType.GET, object data = null)
