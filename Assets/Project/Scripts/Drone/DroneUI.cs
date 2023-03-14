@@ -6,12 +6,11 @@ using DG.Tweening;
 public class DroneUI : MonoBehaviour
 {
     public GameObject objectToToggle;
-
+    public Transform player;
     public GameObject drone;
-
     public float durationVal;
 
-    private List<Transform> locationPoints = new List<Transform>();
+    public List<Transform> locationPoints = new List<Transform>();
 
     public List<Button> buttons = new List<Button>();
 
@@ -28,7 +27,13 @@ public class DroneUI : MonoBehaviour
         locationPoints.Add(ShoeStore.transform);
 
         buttons[0].onClick.AddListener(() => GoToLocation(locationPoints[0].position));
-        buttons[1].onClick.AddListener(() => GoToLocation(locationPoints[1].position));
+        
+        buttons[0].onClick.AddListener(() => GoToLocationPlayer(locationPoints[0].position));
+        
+    
+        buttons[1].onClick.AddListener(() => {GoToLocationPlayer(locationPoints[1].position);});
+        
+       
         buttons[2].onClick.AddListener(() => GoToLocation(locationPoints[2].position));
         buttons[3].onClick.AddListener(() => GoToLocation(locationPoints[3].position));
         
@@ -56,13 +61,26 @@ public class DroneUI : MonoBehaviour
         var Parent = GameObject.Find("DroneParent");
         drone.transform.SetParent(Parent.transform);
         Debug.Log("geldi");    
+          
         // reset the position and rotation of the drone object
         drone.transform.localPosition = Parent.transform.localPosition;
-        drone.transform.localRotation = Quaternion.identity;        
+        drone.transform.localRotation = Quaternion.identity; 
+               
         
         if (distance > 0) {
             drone.transform.LookAt(new Vector3(targetPosition.x,drone.transform.position.y,targetPosition.z));
         }
     });
-}
+    }
+
+    public void GoToLocationPlayer(Vector3 targetPosition)
+    {
+    float distance = Vector3.Distance(targetPosition, drone.transform.position);
+    float duration = distance / durationVal; // adjust the speed by changing the value of the denominator
+    // move the drone object to the target position using DoTween
+    player.DOMove(new Vector3(targetPosition.x,player.position.y,targetPosition.z), duration);
+        // set the drone object as a child of the player's upper shoulder
+    Debug.Log("asd");
+    }
+
 }
